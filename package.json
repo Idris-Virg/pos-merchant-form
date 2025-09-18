@@ -1,4 +1,23 @@
 {
+  "name": "pos-merchant-form",
+  "version": "1.0.0",
+  "description": "\"# pos-merchant-form\"",
+  "homepage": "https://github.com/Idris-Virg/pos-merchant-form#readme",
+  "bugs": {
+    "url": "https://github.com/Idris-Virg/pos-merchant-form/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Idris-Virg/pos-merchant-form.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
@@ -7,5 +26,6 @@
     "helmet": "^8.1.0",
     "mysql2": "^3.14.4",
     "pg": "^8.16.3"
-  }
+  },
+  "devDependencies": {}
 }
