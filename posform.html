@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merchant POS E-Business</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+<div class="logo">
+        <img src="https://res.cloudinary.com/summitbank/image/upload/v1756220089/Summit_Logo_1_ddsbfp.png" alt="Summit Bank Logo">
+      </div>
+    <div class="hero">
+      <h1>Merchant POS E-Business</h1>
+      <p>Kindly fill accurately.</p>
+      <small>When you submit this form, the owner will see your name and email address.</small>
+    </div>
+  </header>
+
+  <main class="container">
+    <form id="posForm" novalidate>
+      <p class="required-note"><span>*</span> Required</p>
+
+      <section class="card">
+        <h2 class="section-title">Request Type</h2>
+        <p class="muted">Choose Request Type</p>
+
+        <div class="grid two">
+          <div class="form-field">
+            <label for="zone">1. Zone <span class="req">*</span></label>
+            <select id="zone" name="zone" required>
+              <option value="" selected disabled>Select your answer</option>
+              <option>North</option><option>South</option>
+              <option>East</option><option>West</option>
+              <option>Central</option>
+            </select>
+            <span class="error" data-error-for="zone"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="supervisor">2. Supervisor Name <span class="req">*</span></label>
+            <select id="supervisor" name="supervisor" required>
+              <option value="" selected disabled>Select your answer</option>
+              <option>Null</option><option>Null</option>
+              <option>Null</option><option>Null</option>
+            </select>
+            <span class="error" data-error-for="supervisor"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="ebizStaff">3. E-Business Staff Name</label>
+            <input id="ebizStaff" name="ebizStaff" type="text" placeholder="Enter your answer"/>
+          </div>
+
+          <div class="form-field">
+            <label for="visited">4. Has Merchant location been visited? <span class="req">*</span></label>
+            <select id="visited" name="visited" required>
+              <option value="" selected disabled>Select your answer</option>
+              <option>Yes</option><option>No</option>
+            </select>
+            <span class="error" data-error-for="visited"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="branch">5. Branch/Bizunit <span class="req">*</span></label>
+            <select id="branch" name="branch" required>
+              <option value="" selected disabled>Select your answer</option>
+              <option>Head Office</option><option>Kaduna</option>
+              <option>Kano</option><option>Lagos Island</option>
+              <option>Abuja</option>
+            </select>
+            <span class="error" data-error-for="branch"></span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>6. Select Appropriate option <span class="req">*</span></label>
+          <div class="radios" role="radiogroup" aria-label="Request Option">
+            <label><input type="radio" name="requestOption" value="New Request" required/> New Request</label>
+          </div>
+          <span class="error" data-error-for="requestOption"></span>
+        </div>
+      </section>
+
+      <section id="newRequestBlock" class="card hidden">
+        <h2 class="section-title">New Request</h2>
+        <p class="muted">New Terminal Request</p>
+
+        <div class="grid two">
+          <div class="form-field">
+            <label for="merchantEmail">7. Merchant Email Address <span class="req">*</span></label>
+            <input id="merchantEmail" name="merchantEmail" type="email" placeholder="Enter your answer"/>
+            <span class="error" data-error-for="merchantEmail"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="merchantName">8. Merchant Name <span class="req">*</span></label>
+            <input id="merchantName" name="merchantName" type="text" placeholder="Enter your answer"/>
+            <span class="error" data-error-for="merchantName"></span>
+          </div>
+
+          <div class="form-field wide">
+            <label for="address">9. Physical Address <span class="req">*</span></label>
+            <input id="address" name="address" type="text" placeholder="Enter your answer"/>
+            <span class="error" data-error-for="address"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="state">10. State <span class="req">*</span></label>
+            <select id="state" name="state"> 
+              <option value="" selected disabled>Select your answer</option>
+              <option>Kaduna</option><option>Lagos</option><option>Abuja</option>
+            </select>
+            <span class="error" data-error-for="state"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="lga">11. Local Government <span class="req">*</span></label>
+            <input id="lga" name="lga" type="text" placeholder="Enter your answer"/>
+            <span class="error" data-error-for="lga"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="numPos">12. No. of POS <span class="req">*</span></label>
+            <input id="numPos" name="numPos" type="number" min="1" step="1" placeholder="e.g. 2"/>
+            <span class="error" data-error-for="numPos"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="businessType">13. Business Type <span class="req">*</span></label>
+            <input id="businessType" name="businessType" type="text" placeholder="e.g. Supermarket"/>
+            <span class="error" data-error-for="businessType"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="contactName">14. Merchant Contact Name <span class="req">*</span></label>
+            <input id="contactName" name="contactName" type="text" placeholder="Enter contact name"/>
+            <span class="error" data-error-for="contactName"></span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>15. Account Type <span class="req">*</span></label>
+          <div class="checks">
+            <label><input type="checkbox" name="accountType" value="Savings"/> Savings</label>
+            <label><input type="checkbox" name="accountType" value="Current"/> Current</label>
+            <label><input type="checkbox" name="accountType" value="Corporate Account"/> Corporate Account</label>
+          </div>
+          <span class="error" data-error-for="accountType"></span>
+          <small class="muted">Select all that apply.</small>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="submit" class="btn primary">Submit</button>
+        <button type="reset" class="btn ghost">Clear</button>
+        <button type="button" class="btn ghost" onclick="downloadExcel()">Download Excel</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <small>© 2025 Summit Bank – E-Business</small>
+  </footer>
+
+  <script>
+  document.querySelectorAll('input[name="requestOption"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.getElementById('newRequestBlock')
+        .classList.toggle('hidden', radio.value !== 'New Request');
+    });
+  });
+
+  const setError = (id, msg) => {
+    const el = document.querySelector(`[data-error-for="${id}"]`);
+    if (el) { el.textContent = msg; el.style.display = 'block'; }
+  };
+  const clearErrors = () => {
+    document.querySelectorAll('.error').forEach(e => { e.textContent = ''; e.style.display = 'none'; });
+  };
+
+  document.getElementById('posForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const selectedOpt = [...document.querySelectorAll('input[name="requestOption"]')].find(x => x.checked);
+    const isNew = selectedOpt?.value === 'New Request';
+    const errors = [];
+
+    ['zone','supervisor','visited','branch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value) { setError(id, 'This field is required.'); errors.push(id); }
+    });
+    if (!selectedOpt) { setError('requestOption','Choose a request option.'); errors.push('requestOption'); }
+
+    if (isNew) {
+      ['merchantEmail','merchantName','address','state','lga','numPos','businessType','contactName'].forEach(id => {
+        if (!document.getElementById(id).value) { setError(id, 'This field is required.'); errors.push(id); }
+      });
+
+      const email = document.getElementById('merchantEmail').value;
+      if (email && !/^\S+@\S+\.\S+$/.test(email)) { setError('merchantEmail','Invalid email.'); errors.push('merchantEmail'); }
+
+      if (![...document.querySelectorAll('input[name="accountType"]:checked')].length) {
+        setError('accountType','Select at least one account type.'); errors.push('accountType');
+      }
+    }
+
+    if (errors.length) {
+      document.querySelector(`[data-error-for="${errors[0]}"]`)
+        ?.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    const formData = {
+      zone: zone.value,
+      supervisor: supervisor.value,
+      ebizStaff: ebizStaff.value,
+      visited: visited.value,
+      branch: branch.value,
+      requestOption: selectedOpt.value,
+      merchantEmail: merchantEmail?.value,
+      merchantName: merchantName?.value,
+      address: address?.value,
+      state: state?.value,
+      lga: lga?.value,
+      numPos: numPos?.value,
+      businessType: businessType?.value,
+      contactName: contactName?.value,
+      accountTypes: [...document.querySelectorAll('input[name="accountType"]:checked')].map(c => c.value)
+    };
+
+    try {
+      const res = await fetch("http://localhost:5501/api/pos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("Form submitted successfully!");
+        e.target.reset();
+        document.getElementById('newRequestBlock').classList.add('hidden');
+      } else {
+        alert("❌ Error: " + (data.error || "Failed to submit"));
+      }
+    } catch (err) {
+      console.error("❌ Submission failed:", err);
+      alert("Could not connect to server.");
+    }
+  });
+
+  function downloadExcel() {
+    fetch("http://localhost:5501/api/pos/download")
+      .then(res => {
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return res.blob();
+      })
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pos_requests.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch(err => {
+        console.error("Download error:", err);
+        alert("❌ Could not download Excel file.");
+      });
+  }
+  </script>
+</body>
+</html>
