@@ -642,7 +642,7 @@
   });
 
   function downloadExcel() {
-    fetch("http://pos-merchant:5500/api/pos/download")
+    fetch("http://localhost:5500/pos-merchant/pos/download")
       .then(res => {
         if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return res.blob();

@@ -24,18 +24,14 @@ exports.downloadExcel = async (req, res) => {
     try {
         const buffer = await service.downloadExcel();
         
-        res.setHeader(
-            "Content-Type",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        );
-        res.setHeader(
-            "Content-Disposition",
-            "attachment; filename=pos_requests.xlsx"
-        );
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=test.xlsx');
         
         res.send(buffer);
+        console.log("Test file sent successfully");
+        
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: error.message });
+        console.error("Test download failed:", error);
+        res.status(500).send("Error: " + error.message);
     }
 }
