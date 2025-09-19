@@ -1,762 +1,963 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SBL Operations | Merchant POS E-Business</title>
-  <link
-            rel="icon"
-            type="image/png"
-            href="https://res.cloudinary.com/netpoc-inc/image/upload/v1748184688/Logo_1_trmpwd.png"
-          />
-  <style>
-    :root {
-      --primary: #AF1F23;
-      --primary-dark: #1d4ed8;
-      --success: #059669;
-      --error: #dc2626;
-      --gray-100: #f3f4f6;
-      --gray-200: #e5e7eb;
-      --gray-300: #d1d5db;
-      --gray-500: #6b7280;
-      --gray-700: #374151;
-      --gray-900: #111827;
-      --sbl-primary: #C6B17D;
-      --sbl-secondary: #AF1F23;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      color: var(--gray-900);
-      background-color: #f9fafb;
-    }
-    
-    .site-header {
-      background: linear-gradient(to left, #7f6202, #7a7466);
-      color: white;
-      padding: 1.5rem 1rem;
-      text-align: center;
-    }
-    
-    .logo {
-      margin-bottom: 1rem;
-    }
-    
-    .logo img {
-      height: 5rem;
-    }
-    
-    .hero h1 {
-      font-size: 1.875rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    
-    .hero p {
-      margin-bottom: 0.5rem;
-      opacity: 0.9;
-    }
-    
-    .hero small {
-      font-size: 0.75rem;
-      opacity: 0.8;
-    }
-    
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    
-    .required-note {
-      text-align: right;
-      margin-bottom: 1rem;
-      color: var(--gray-500);
-      font-size: 0.875rem;
-    }
-    
-    .required-note span {
-      color: var(--error);
-    }
-    
-    .card {
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    
-    .muted {
-      color: var(--gray-500);
-      margin-bottom: 1.5rem;
-    }
-    
-    .grid {
-      display: grid;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .grid.two {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-    
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-    }
-    
-    .form-field.wide {
-      grid-column: 1 / -1;
-    }
-    
-    label {
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-    
-    .req {
-      color: var(--error);
-    }
-    
-    input, select {
-      padding: 0.75rem;
-      border: 1px solid var(--gray-300);
-      border-radius: 0.375rem;
-      font-family: inherit;
-      font-size: 1rem;
-    }
-    
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    
-    .radios, .checks {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .radios label, .checks label {
-      display: flex;
-      align-items: center;
-      font-weight: normal;
-      margin-bottom: 0;
-    }
-    
-    input[type="radio"], input[type="checkbox"] {
-      margin-right: 0.5rem;
-    }
-    
-    .error {
-      color: var(--error);
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
-      display: none;
-    }
-    
-    .actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-    
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.375rem;
-      font-family: inherit;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .btn.primary {
-      background-color: var(--sbl-secondary);
-      color: white;
-    }
-    
-    .btn.primary:hover {
-      background-color: var(--primary-dark);
-    }
-    
-    .btn.ghost {
-      background-color: transparent;
-      color: var(--gray-700);
-      border: 1px solid var(--gray-300);
-    }
-    
-    .btn.ghost:hover {
-      background-color: var(--gray-100);
-    }
-    
-    .site-footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--sbl-secondary);
-      border-top: 1px solid var(--gray-200);
-      margin-top: 3rem;
-    }
-    
-    .hidden {
-      display: none;
-    }
-    
-    /* Modal styles */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .modal-backdrop.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .modal {
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 400px;
-      overflow: hidden;
-      transform: translateY(-20px);
-      transition: transform 0.3s ease;
-    }
-    
-    .modal-backdrop.active .modal {
-      transform: translateY(0);
-    }
-    
-    .modal-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--gray-200);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .modal-title {
-      font-weight: 600;
-      font-size: 1.25rem;
-    }
-    
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--gray-500);
-    }
-    
-    .modal-body {
-      padding: 1.5rem;
-    }
-    
-    .modal-message {
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
-    
-    .modal-footer {
-      padding: 1rem 1.5rem;
-      border-top: 1px solid var(--gray-200);
-      display: flex;
-      justify-content: flex-end;
-    }
-    
-    .modal-btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 0.375rem;
-      font-family: inherit;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    
-    .modal-btn.primary {
-      background-color: var(--primary);
-      color: white;
-    }
-    
-    .modal-btn.primary:hover {
-      background-color: var(--primary-dark);
-    }
-    
-    /* Success and error states */
-    .modal.success .modal-title {
-      color: var(--success);
-    }
-    
-    .modal.error .modal-title {
-      color: var(--error);
-    }
-    
-    /* Loading Modal Styles */
-    .loading-modal .modal {
-      max-width: 300px;
-      text-align: center;
-    }
-    
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid var(--gray-200);
-      border-top: 4px solid var(--sbl-secondary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 1rem;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .loading-modal .modal-title {
-      color: var(--sbl-secondary);
-      margin-bottom: 0.5rem;
-    }
-    
-    .loading-modal .modal-message {
-      color: var(--gray-700);
-      margin-bottom: 0;
-    }
-    
-    .loading-modal .modal-header,
-    .loading-modal .modal-footer {
-      display: none;
-    }
-    
-    @media (max-width: 640px) {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBL Operations | Merchant POS E-Business</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/netpoc-inc/image/upload/v1748184688/Logo_1_trmpwd.png"
+    />
+    <style>
+      :root {
+        --primary: #af1f23;
+        --primary-dark: #1d4ed8;
+        --success: #059669;
+        --error: #dc2626;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-500: #6b7280;
+        --gray-700: #374151;
+        --gray-900: #111827;
+        --sbl-primary: #c6b17d;
+        --sbl-secondary: #af1f23;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: var(--gray-900);
+        background-color: #f9fafb;
+      }
+
+      a {
+        text-decoration: none; 
+        color: var(--sbl-secondary);
+      }
+      .site-header {
+        background: linear-gradient(to left, #7f6202, #7a7466);
+        color: white;
+        padding: 1.5rem 1rem;
+        text-align: center;
+      }
+
+      .logo {
+        margin-bottom: 1rem;
+      }
+
+      .logo img {
+        height: 5rem;
+      }
+
+      .hero h1 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .hero p {
+        margin-bottom: 0.5rem;
+        opacity: 0.9;
+      }
+
+      .hero small {
+        font-size: 0.75rem;
+        opacity: 0.8;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .required-note {
+        text-align: right;
+        margin-bottom: 1rem;
+        color: var(--gray-500);
+        font-size: 0.875rem;
+      }
+
+      .required-note span {
+        color: var(--error);
+      }
+
+      .card {
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .muted {
+        color: var(--gray-500);
+        margin-bottom: 1.5rem;
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
       .grid.two {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       }
-      
-      .actions {
+
+      .form-field {
+        display: flex;
         flex-direction: column;
+        margin-bottom: 1rem;
       }
-    }
-  </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <header class="site-header">
-    <div class="logo">
-      <img src="https://res.cloudinary.com/summitbank/image/upload/v1756220089/Summit_Logo_1_ddsbfp.png" alt="Summit Bank Logo">
-    </div>
-    <div class="hero">
-      <h1>Merchant POS E-Business</h1>
-      <p>Kindly fill accurately.</p>
-      <small>When you submit this form, the owner will see your name and email address.</small>
-    </div>
-  </header>
 
-  <main class="container">
-    <form id="posForm" novalidate>
-      <p class="required-note"><span>*</span> Required</p>
-
-      <section class="card">
-        <h2 class="section-title">Request Type</h2>
-        <p class="muted">Choose Request Type</p>
-
-        <div class="grid two">
-          <div class="form-field">
-            <label for="zone">1. Zone <span class="req">*</span></label>
-            <select id="zone" name="zone" required>
-              <option value="" selected disabled>Select your answer</option>
-              <option>North</option><option>South</option>
-              <option>East</option><option>West</option>
-              <option>Central</option>
-            </select>
-            <span class="error" data-error-for="zone"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="supervisor">2. Supervisor Name <span class="req">*</span></label>
-            <select id="supervisor" name="supervisor" required>
-              <option value="" selected disabled>Select your answer</option>
-              <option>Abdulrahman Bello</option><option>Bankole Thomas</option>
-              <option>Ahmed Lawal</option><option>Aisha Mohammed</option>
-            </select>
-            <span class="error" data-error-for="supervisor"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="ebizStaff">3. E-Business Staff Name</label>
-            <input id="ebizStaff" name="ebizStaff" type="text" placeholder="Enter your answer"/>
-          </div>
-
-          <div class="form-field">
-            <label for="visited">4. Has Merchant location been visited? <span class="req">*</span></label>
-            <select id="visited" name="visited" required>
-              <option value="" selected disabled>Select your answer</option>
-              <option>Yes</option><option>No</option>
-            </select>
-            <span class="error" data-error-for="visited"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="branch">5. Branch/Biz Unit <span class="req">*</span></label>
-            <select id="branch" name="branch" required>
-              <option value="" selected disabled>Select your answer</option>
-              <option>Head Office</option><option>Kaduna</option>
-              <option>Kano</option><option>Lagos Island</option>
-              <option>Abuja</option>
-            </select>
-            <span class="error" data-error-for="branch"></span>
-          </div>
-        </div>
-
-        <div class="form-field">
-          <label>6. Select Appropriate option <span class="req">*</span></label>
-          <div class="radios" role="radiogroup" aria-label="Request Option">
-            <label><input type="radio" name="requestOption" value="New Request" required/> New Request</label>
-          </div>
-          <span class="error" data-error-for="requestOption"></span>
-        </div>
-      </section>
-
-      <section id="newRequestBlock" class="card hidden">
-        <h2 class="section-title">New Request</h2>
-        <p class="muted">New Terminal Request</p>
-
-        <div class="grid two">
-          <div class="form-field">
-            <label for="merchantEmail">7. Merchant Email Address <span class="req">*</span></label>
-            <input id="merchantEmail" name="merchantEmail" type="email" placeholder="Enter your answer"/>
-            <span class="error" data-error-for="merchantEmail"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="merchantName">8. Merchant Name <span class="req">*</span></label>
-            <input id="merchantName" name="merchantName" type="text" placeholder="Enter your answer"/>
-            <span class="error" data-error-for="merchantName"></span>
-          </div>
-
-          <div class="form-field wide">
-            <label for="address">9. Physical Address <span class="req">*</span></label>
-            <input id="address" name="address" type="text" placeholder="Enter your answer"/>
-            <span class="error" data-error-for="address"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="state">10. State <span class="req">*</span></label>
-            <select id="state" name="state"> 
-              <option value="" selected disabled>Select your answer</option>
-              <option>Kaduna</option><option>Lagos</option><option>Abuja</option>
-            </select>
-            <span class="error" data-error-for="state"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="lga">11. Local Government <span class="req">*</span></label>
-            <input id="lga" name="lga" type="text" placeholder="Enter your answer"/>
-            <span class="error" data-error-for="lga"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="numPos">12. No. of POS <span class="req">*</span></label>
-            <input id="numPos" name="numPos" type="number" min="1" step="1" placeholder="e.g. 2"/>
-            <span class="error" data-error-for="numPos"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="businessType">13. Business Type <span class="req">*</span></label>
-            <input id="businessType" name="businessType" type="text" placeholder="e.g. Supermarket"/>
-            <span class="error" data-error-for="businessType"></span>
-          </div>
-
-          <div class="form-field">
-            <label for="contactName">14. Merchant Contact Name <span class="req">*</span></label>
-            <input id="contactName" name="contactName" type="text" placeholder="Enter contact name"/>
-            <span class="error" data-error-for="contactName"></span>
-          </div>
-        </div>
-
-        <div class="form-field">
-          <label>15. Account Type <span class="req">*</span></label>
-          <div class="checks">
-            <label><input type="checkbox" name="accountType" value="Savings"/> Savings</label>
-            <label><input type="checkbox" name="accountType" value="Current"/> Current</label>
-            <label><input type="checkbox" name="accountType" value="Corporate Account"/> Corporate Account</label>
-          </div>
-          <span class="error" data-error-for="accountType"></span>
-          <small class="muted">Select all that apply.</small>
-        </div>
-      </section>
-
-      <div class="actions">
-        <button type="submit" class="btn primary">Submit</button>
-        <button type="reset" class="btn ghost">Clear</button>
-        <button type="button" class="btn ghost" onclick="downloadExcel()">Download Excel</button>
-      </div>
-    </form>
-  </main>
-
-  <footer class="site-footer">
-    <small>© 2025 Summit Bank – E-Business</small>
-  </footer>
-
-  <!-- Modal Dialog -->
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal" id="modal">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modalTitle">Modal Title</h2>
-        <button class="modal-close" id="modalClose">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p class="modal-message" id="modalMessage">Modal message will appear here.</p>
-      </div>
-      <div class="modal-footer">
-        <button class="modal-btn primary" id="modalButton">OK</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Loading Modal -->
-  <div class="modal-backdrop loading-modal" id="loadingBackdrop">
-    <div class="modal">
-      <div class="modal-body">
-        <div class="loading-spinner"></div>
-        <h2 class="modal-title" id="loadingTitle">Processing</h2>
-        <p class="modal-message" id="loadingMessage">Please wait...</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-  document.querySelectorAll('input[name="requestOption"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      document.getElementById('newRequestBlock')
-        .classList.toggle('hidden', radio.value !== 'New Request');
-    });
-  });
-
-  const setError = (id, msg) => {
-    const el = document.querySelector(`[data-error-for="${id}"]`);
-    if (el) { el.textContent = msg; el.style.display = 'block'; }
-  };
-  const clearErrors = () => {
-    document.querySelectorAll('.error').forEach(e => { e.textContent = ''; e.style.display = 'none'; });
-  };
-
-  // Modal functions
-  function showModal(title, message, type = 'info') {
-    const modal = document.getElementById('modal');
-    const backdrop = document.getElementById('modalBackdrop');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalMessage = document.getElementById('modalMessage');
-    
-    // Remove previous type classes
-    modal.classList.remove('success', 'error', 'info');
-    
-    // Add the appropriate class based on type
-    if (type) {
-      modal.classList.add(type);
-    }
-    
-    modalTitle.textContent = title;
-    modalMessage.textContent = message;
-    backdrop.classList.add('active');
-    
-    // Focus the modal button for accessibility
-    document.getElementById('modalButton').focus();
-  }
-  
-  function hideModal() {
-    const backdrop = document.getElementById('modalBackdrop');
-    backdrop.classList.remove('active');
-  }
-  
-  // Loading modal functions
-  function showLoading(title = 'Processing', message = 'Please wait...') {
-    const loadingTitle = document.getElementById('loadingTitle');
-    const loadingMessage = document.getElementById('loadingMessage');
-    const loadingBackdrop = document.getElementById('loadingBackdrop');
-    
-    loadingTitle.textContent = title;
-    loadingMessage.textContent = message;
-    loadingBackdrop.classList.add('active');
-    
-    // Disable form buttons during loading
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.disabled = true;
-    });
-  }
-  
-  function hideLoading() {
-    const loadingBackdrop = document.getElementById('loadingBackdrop');
-    loadingBackdrop.classList.remove('active');
-    
-    // Re-enable form buttons
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.disabled = false;
-    });
-  }
-  
-  // Set up modal event listeners
-  document.getElementById('modalClose').addEventListener('click', hideModal);
-  document.getElementById('modalButton').addEventListener('click', hideModal);
-  document.getElementById('modalBackdrop').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('modalBackdrop')) {
-      hideModal();
-    }
-  });
-  
-  // Close modal with Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (document.getElementById('modalBackdrop').classList.contains('active')) {
-        hideModal();
+      .form-field.wide {
+        grid-column: 1 / -1;
       }
-      if (document.getElementById('loadingBackdrop').classList.contains('active')) {
-        // Don't allow closing loading modal with Escape
-        e.preventDefault();
+
+      label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
       }
-    }
-  });
 
-  document.getElementById('posForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors();
+      .req {
+        color: var(--error);
+      }
 
-    const selectedOpt = [...document.querySelectorAll('input[name="requestOption"]')].find(x => x.checked);
-    const isNew = selectedOpt?.value === 'New Request';
-    const errors = [];
+      input,
+      select {
+        padding: 0.75rem;
+        border: 1px solid var(--gray-300);
+        border-radius: 0.375rem;
+        font-family: inherit;
+        font-size: 1rem;
+      }
 
-    ['zone','supervisor','visited','branch'].forEach(id => {
-      const el = document.getElementById(id);
-      if (!el.value) { setError(id, 'This field is required.'); errors.push(id); }
-    });
-    if (!selectedOpt) { setError('requestOption','Choose a request option.'); errors.push('requestOption'); }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
 
-    if (isNew) {
-      ['merchantEmail','merchantName','address','state','lga','numPos','businessType','contactName'].forEach(id => {
-        if (!document.getElementById(id).value) { setError(id, 'This field is required.'); errors.push(id); }
+      .radios,
+      .checks {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .radios label,
+      .checks label {
+        display: flex;
+        align-items: center;
+        font-weight: normal;
+        margin-bottom: 0;
+      }
+
+      input[type="radio"],
+      input[type="checkbox"] {
+        margin-right: 0.5rem;
+      }
+
+      .error {
+        color: var(--error);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: none;
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.375rem;
+        font-family: inherit;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn.primary {
+        background-color: var(--sbl-secondary);
+        color: white;
+      }
+
+      .btn.primary:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .btn.ghost {
+        background-color: transparent;
+        color: var(--gray-700);
+        border: 1px solid var(--gray-300);
+      }
+
+      .btn.ghost:hover {
+        background-color: var(--gray-100);
+      }
+
+      .site-footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--sbl-secondary);
+        border-top: 1px solid var(--gray-200);
+        margin-top: 3rem;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* Modal styles */
+      .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .modal-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal {
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        overflow: hidden;
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+      }
+
+      .modal-backdrop.active .modal {
+        transform: translateY(0);
+      }
+
+      .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--gray-500);
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+      }
+
+      .modal-message {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .modal-btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.375rem;
+        font-family: inherit;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .modal-btn.primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .modal-btn.primary:hover {
+        background-color: var(--primary-dark);
+      }
+
+      /* Success and error states */
+      .modal.success .modal-title {
+        color: var(--success);
+      }
+
+      .modal.error .modal-title {
+        color: var(--error);
+      }
+
+      /* Loading Modal Styles */
+      .loading-modal .modal {
+        max-width: 300px;
+        text-align: center;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid var(--gray-200);
+        border-top: 4px solid var(--sbl-secondary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-modal .modal-title {
+        color: var(--sbl-secondary);
+        margin-bottom: 0.5rem;
+      }
+
+      .loading-modal .modal-message {
+        color: var(--gray-700);
+        margin-bottom: 0;
+      }
+
+      .loading-modal .modal-header,
+      .loading-modal .modal-footer {
+        display: none;
+      }
+
+      @media (max-width: 640px) {
+        .grid.two {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo">
+        <img
+          src="https://res.cloudinary.com/summitbank/image/upload/v1756220089/Summit_Logo_1_ddsbfp.png"
+          alt="Summit Bank Logo"
+        />
+      </div>
+      <div class="hero">
+        <h1>Merchant Banking</h1>
+        <p>POS Request</p>
+        <small>Kindly fill accurately</small>
+      </div>
+    </header>
+
+    <main class="container">
+      <form id="posForm" novalidate>
+        <p class="required-note">
+          <span><strong>*</strong></span> Indicates required fields.
+        </p>
+
+        <section class="card">
+          <h2 class="section-title">Request Type</h2>
+          <p class="muted">Choose Request Type</p>
+
+          <div class="grid two">
+            <div class="form-field">
+              <label for="zone">1. Zone <span class="req">*</span></label>
+              <select id="zone" name="zone" required>
+                <option value="" selected disabled>Select your answer</option>
+                <option>North</option>
+                <option>South</option>
+                <option>East</option>
+                <option>West</option>
+                <option>Central</option>
+              </select>
+              <span class="error" data-error-for="zone"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="supervisor"
+                >2. Supervisor Name <span class="req">*</span></label
+              >
+              <select id="supervisor" name="supervisor" required>
+                <option value="" selected disabled>Select your answer</option>
+                <option>Abdulrahman Bello</option>
+                <option>Bankole Thomas</option>
+                <option>Ahmed Lawal</option>
+                <option>Aisha Mohammed</option>
+              </select>
+              <span class="error" data-error-for="supervisor"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="ebizStaff">3. E-Business Staff Name</label>
+              <input
+                id="ebizStaff"
+                name="ebizStaff"
+                type="text"
+                placeholder="Enter your answer"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="visited"
+                >4. Has Merchant location been visited?
+                <span class="req">*</span></label
+              >
+              <select id="visited" name="visited" required>
+                <option value="" selected disabled>Select your answer</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+              <span class="error" data-error-for="visited"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="branch"
+                >5. Branch/Biz Unit <span class="req">*</span></label
+              >
+              <select id="branch" name="branch" required>
+                <option value="" selected disabled>Select your answer</option>
+                <option>Head Office</option>
+                <option>Kaduna</option>
+                <option>Kano</option>
+                <option>Lagos Island</option>
+                <option>Abuja</option>
+              </select>
+              <span class="error" data-error-for="branch"></span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label
+              >6. Select Appropriate option <span class="req">*</span></label
+            >
+            <div class="radios" role="radiogroup" aria-label="Request Option">
+              <label
+                ><input
+                  type="radio"
+                  name="requestOption"
+                  value="New Request"
+                  required
+                />
+                New Request</label
+              >
+            </div>
+            <span class="error" data-error-for="requestOption"></span>
+          </div>
+        </section>
+
+        <section id="newRequestBlock" class="card hidden">
+          <h2 class="section-title">New Request</h2>
+          <p class="muted">New Terminal Request</p>
+
+          <div class="grid two">
+            <div class="form-field">
+              <label for="merchantEmail"
+                >7. Merchant Email Address <span class="req">*</span></label
+              >
+              <input
+                id="merchantEmail"
+                name="merchantEmail"
+                type="email"
+                placeholder="Enter your answer"
+              />
+              <span class="error" data-error-for="merchantEmail"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="merchantName"
+                >8. Merchant Name <span class="req">*</span></label
+              >
+              <input
+                id="merchantName"
+                name="merchantName"
+                type="text"
+                placeholder="Enter your answer"
+              />
+              <span class="error" data-error-for="merchantName"></span>
+            </div>
+
+            <div class="form-field wide">
+              <label for="address"
+                >9. Physical Address <span class="req">*</span></label
+              >
+              <input
+                id="address"
+                name="address"
+                type="text"
+                placeholder="Enter your answer"
+              />
+              <span class="error" data-error-for="address"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="state">10. State <span class="req">*</span></label>
+              <select id="state" name="state">
+                <option value="" selected disabled>Select your answer</option>
+                <option>Kaduna</option>
+                <option>Lagos</option>
+                <option>Abuja</option>
+              </select>
+              <span class="error" data-error-for="state"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="lga"
+                >11. Local Government <span class="req">*</span></label
+              >
+              <input
+                id="lga"
+                name="lga"
+                type="text"
+                placeholder="Enter your answer"
+              />
+              <span class="error" data-error-for="lga"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="numPos"
+                >12. No. of POS <span class="req">*</span></label
+              >
+              <input
+                id="numPos"
+                name="numPos"
+                type="number"
+                min="1"
+                step="1"
+                placeholder="e.g. 2"
+              />
+              <span class="error" data-error-for="numPos"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="businessType"
+                >13. Business Type <span class="req">*</span></label
+              >
+              <input
+                id="businessType"
+                name="businessType"
+                type="text"
+                placeholder="e.g. Supermarket"
+              />
+              <span class="error" data-error-for="businessType"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="contactName"
+                >14. Merchant Contact Name <span class="req">*</span></label
+              >
+              <input
+                id="contactName"
+                name="contactName"
+                type="text"
+                placeholder="Enter contact name"
+              />
+              <span class="error" data-error-for="contactName"></span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>15. Account Type <span class="req">*</span></label>
+            <div class="checks">
+              <label
+                ><input type="checkbox" name="accountType" value="Savings" />
+                Savings</label
+              >
+              <label
+                ><input type="checkbox" name="accountType" value="Current" />
+                Current</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="accountType"
+                  value="Corporate Account"
+                />
+                Corporate Account</label
+              >
+            </div>
+            <span class="error" data-error-for="accountType"></span>
+            <small class="muted">Select all that apply.</small>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Submit</button>
+          <button type="reset" class="btn ghost">Clear</button>
+          <button
+            type="button"
+            class="btn ghost"
+            onclick="downloadExcel()"
+            disabled
+          >
+            Download Excel
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <footer class="site-footer">
+      <small>© 2025 Summit Bank | E-Business | <a href="#">Help</a> | <a href="#">Documentation</a></small>
+    </footer>
+
+    <!-- Modal Dialog -->
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal" id="modal">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitle">Modal Title</h2>
+          <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-message" id="modalMessage">
+            Modal message will appear here.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="modalButton">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal-backdrop loading-modal" id="loadingBackdrop">
+      <div class="modal">
+        <div class="modal-body">
+          <div class="loading-spinner"></div>
+          <h2 class="modal-title" id="loadingTitle">Processing</h2>
+          <p class="modal-message" id="loadingMessage">Please wait...</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document
+        .querySelectorAll('input[name="requestOption"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", () => {
+            document
+              .getElementById("newRequestBlock")
+              .classList.toggle("hidden", radio.value !== "New Request");
+          });
+        });
+
+      const setError = (id, msg) => {
+        const el = document.querySelector(`[data-error-for="${id}"]`);
+        if (el) {
+          el.textContent = msg;
+          el.style.display = "block";
+        }
+      };
+      const clearErrors = () => {
+        document.querySelectorAll(".error").forEach((e) => {
+          e.textContent = "";
+          e.style.display = "none";
+        });
+      };
+
+      // Modal functions
+      function showModal(title, message, type = "info") {
+        const modal = document.getElementById("modal");
+        const backdrop = document.getElementById("modalBackdrop");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalMessage = document.getElementById("modalMessage");
+
+        // Remove previous type classes
+        modal.classList.remove("success", "error", "info");
+
+        // Add the appropriate class based on type
+        if (type) {
+          modal.classList.add(type);
+        }
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        backdrop.classList.add("active");
+
+        // Focus the modal button for accessibility
+        document.getElementById("modalButton").focus();
+      }
+
+      function hideModal() {
+        const backdrop = document.getElementById("modalBackdrop");
+        backdrop.classList.remove("active");
+      }
+
+      // Loading modal functions
+      function showLoading(title = "Processing", message = "Please wait...") {
+        const loadingTitle = document.getElementById("loadingTitle");
+        const loadingMessage = document.getElementById("loadingMessage");
+        const loadingBackdrop = document.getElementById("loadingBackdrop");
+
+        loadingTitle.textContent = title;
+        loadingMessage.textContent = message;
+        loadingBackdrop.classList.add("active");
+
+        // Disable form buttons during loading
+        document.querySelectorAll(".btn").forEach((btn) => {
+          btn.disabled = true;
+        });
+      }
+
+      function hideLoading() {
+        const loadingBackdrop = document.getElementById("loadingBackdrop");
+        loadingBackdrop.classList.remove("active");
+
+        // Re-enable form buttons
+        document.querySelectorAll(".btn").forEach((btn) => {
+          btn.disabled = false;
+        });
+      }
+
+      // Set up modal event listeners
+      document
+        .getElementById("modalClose")
+        .addEventListener("click", hideModal);
+      document
+        .getElementById("modalButton")
+        .addEventListener("click", hideModal);
+      document
+        .getElementById("modalBackdrop")
+        .addEventListener("click", (e) => {
+          if (e.target === document.getElementById("modalBackdrop")) {
+            hideModal();
+          }
+        });
+
+      // Close modal with Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (
+            document
+              .getElementById("modalBackdrop")
+              .classList.contains("active")
+          ) {
+            hideModal();
+          }
+          if (
+            document
+              .getElementById("loadingBackdrop")
+              .classList.contains("active")
+          ) {
+            // Don't allow closing loading modal with Escape
+            e.preventDefault();
+          }
+        }
       });
 
-      const email = document.getElementById('merchantEmail').value;
-      if (email && !/^\S+@\S+\.\S+$/.test(email)) { setError('merchantEmail','Invalid email.'); errors.push('merchantEmail'); }
+      document
+        .getElementById("posForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          clearErrors();
 
-      if (![...document.querySelectorAll('input[name="accountType"]:checked')].length) {
-        setError('accountType','Select at least one account type.'); errors.push('accountType');
+          const selectedOpt = [
+            ...document.querySelectorAll('input[name="requestOption"]'),
+          ].find((x) => x.checked);
+          const isNew = selectedOpt?.value === "New Request";
+          const errors = [];
+
+          ["zone", "supervisor", "visited", "branch"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el.value) {
+              setError(id, "This field is required.");
+              errors.push(id);
+            }
+          });
+          if (!selectedOpt) {
+            setError("requestOption", "Choose a request option.");
+            errors.push("requestOption");
+          }
+
+          if (isNew) {
+            [
+              "merchantEmail",
+              "merchantName",
+              "address",
+              "state",
+              "lga",
+              "numPos",
+              "businessType",
+              "contactName",
+            ].forEach((id) => {
+              if (!document.getElementById(id).value) {
+                setError(id, "This field is required.");
+                errors.push(id);
+              }
+            });
+
+            const email = document.getElementById("merchantEmail").value;
+            if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+              setError("merchantEmail", "Invalid email.");
+              errors.push("merchantEmail");
+            }
+
+            if (
+              ![
+                ...document.querySelectorAll(
+                  'input[name="accountType"]:checked'
+                ),
+              ].length
+            ) {
+              setError("accountType", "Select at least one account type.");
+              errors.push("accountType");
+            }
+          }
+
+          if (errors.length) {
+            document
+              .querySelector(`[data-error-for="${errors[0]}"]`)
+              ?.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+
+          const formData = {
+            zone: zone.value,
+            supervisor: supervisor.value,
+            ebizStaff: ebizStaff.value,
+            visited: visited.value,
+            branch: branch.value,
+            requestOption: selectedOpt.value,
+            merchantEmail: merchantEmail?.value,
+            merchantName: merchantName?.value,
+            address: address?.value,
+            state: state?.value,
+            lga: lga?.value,
+            numPos: numPos?.value,
+            businessType: businessType?.value,
+            contactName: contactName?.value,
+            accountTypes: [
+              ...document.querySelectorAll('input[name="accountType"]:checked'),
+            ].map((c) => c.value),
+          };
+
+          try {
+            showLoading(
+              "Submitting Form",
+              "Please wait while we process your request..."
+            );
+
+            const res = await fetch("/pos-merchant/pos", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+            hideLoading();
+
+            if (res.ok) {
+              showModal("Success", "Form submitted successfully!", "success");
+              e.target.reset();
+              document
+                .getElementById("newRequestBlock")
+                .classList.add("hidden");
+            } else {
+              showModal(
+                "Error",
+                "❌ Error: " + (data.error || "Failed to submit"),
+                "error"
+              );
+            }
+          } catch (err) {
+            hideLoading();
+            console.error("❌ Submission failed:", err);
+            showModal(
+              "Connection Error",
+              "Could not connect to server.",
+              "error"
+            );
+          }
+        });
+
+      async function downloadExcel() {
+        try {
+          showLoading("Downloading Excel", "Preparing your download...");
+
+          const res = await fetch("/pos-merchant/pos/download");
+
+          if (!res.ok) {
+            throw new Error(`Server returned ${res.status}`);
+          }
+
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "pos_requests.xlsx";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+
+          hideLoading();
+          showModal(
+            "Success",
+            "Excel file downloaded successfully!",
+            "success"
+          );
+
+          // Clean up the URL object after download
+          setTimeout(() => URL.revokeObjectURL(url), 100);
+        } catch (err) {
+          hideLoading();
+          console.error("Download error:", err);
+          showModal("Error", "❌ Could not download Excel file.", "error");
+        }
       }
-    }
-
-    if (errors.length) {
-      document.querySelector(`[data-error-for="${errors[0]}"]`)
-        ?.scrollIntoView({behavior:'smooth', block:'center'});
-      return;
-    }
-
-    const formData = {
-      zone: zone.value,
-      supervisor: supervisor.value,
-      ebizStaff: ebizStaff.value,
-      visited: visited.value,
-      branch: branch.value,
-      requestOption: selectedOpt.value,
-      merchantEmail: merchantEmail?.value,
-      merchantName: merchantName?.value,
-      address: address?.value,
-      state: state?.value,
-      lga: lga?.value,
-      numPos: numPos?.value,
-      businessType: businessType?.value,
-      contactName: contactName?.value,
-      accountTypes: [...document.querySelectorAll('input[name="accountType"]:checked')].map(c => c.value)
-    };
-
-    try {
-      showLoading('Submitting Form', 'Please wait while we process your request...');
-      
-      const res = await fetch("/pos-merchant/pos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-      
-      const data = await res.json();
-      hideLoading();
-      
-      if (res.ok) {
-        showModal("Success", "Form submitted successfully!", "success");
-        e.target.reset();
-        document.getElementById('newRequestBlock').classList.add('hidden');
-      } else {
-        showModal("Error", "❌ Error: " + (data.error || "Failed to submit"), "error");
-      }
-    } catch (err) {
-      hideLoading();
-      console.error("❌ Submission failed:", err);
-      showModal("Connection Error", "Could not connect to server.", "error");
-    }
-  });
-
-  async function downloadExcel() {
-    try {
-      showLoading('Downloading Excel', 'Preparing your download...');
-      
-      const res = await fetch("/pos-merchant/pos/download");
-      
-      if (!res.ok) {
-        throw new Error(`Server returned ${res.status}`);
-      }
-      
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "pos_requests.xlsx";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      
-      hideLoading();
-      showModal("Success", "Excel file downloaded successfully!", "success");
-      
-      // Clean up the URL object after download
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-    } catch (err) {
-      hideLoading();
-      console.error("Download error:", err);
-      showModal("Error", "❌ Could not download Excel file.", "error");
-    }
-  }
-  </script>
-</body>
+    </script>
+  </body>
 </html>
-
