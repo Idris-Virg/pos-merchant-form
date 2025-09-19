@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Merchant POS E-Business</title>
+  <title>SBL Operations | Merchant POS E-Business</title>
   <link
             rel="icon"
             type="image/png"
@@ -703,7 +703,7 @@
     try {
       showLoading('Submitting Form', 'Please wait while we process your request...');
       
-      const res = await fetch("http://pos-merchant:5500/api/pos", {
+      const res = await fetch("http://pos-merchant:5500/pos-merchant/pos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
