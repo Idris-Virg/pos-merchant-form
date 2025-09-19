@@ -2,6 +2,7 @@ require ("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path");
 require('./config/db').connect();
 
 const app = express();
@@ -9,11 +10,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use (express.static('public'))
+
+
 const posRequestRoutes = require("./routes/posRequestRoutes");
 app.use("/pos-merchant/pos", posRequestRoutes);
 
+
 app.get("/pos-merchant", (req, res) => {
-  res.json({ message: "Server is running" });
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/pos-merchant/health', (req, res) => {
