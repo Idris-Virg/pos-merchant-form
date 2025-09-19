@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - development
+      - test
 
 jobs:
   build-and-push-test:
-    if: github.ref == 'refs/heads/development'
+    if: github.ref == 'refs/heads/test'
     runs-on: ubuntu-latest
     env:
       REGISTRY: docker.io
