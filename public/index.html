@@ -703,7 +703,7 @@
     try {
       showLoading('Submitting Form', 'Please wait while we process your request...');
       
-      const res = await fetch("http://pos-merchant:5500/pos-merchant/pos", {
+      const res = await fetch("/pos-merchant/pos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -730,7 +730,7 @@
     try {
       showLoading('Downloading Excel', 'Preparing your download...');
       
-      const res = await fetch("http://pos-merchant:5500/pos-merchant/pos/download");
+      const res = await fetch("/pos-merchant/pos/download");
       
       if (!res.ok) {
         throw new Error(`Server returned ${res.status}`);

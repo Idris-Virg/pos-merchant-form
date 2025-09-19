@@ -21,6 +21,9 @@ app.get("/pos-merchant", (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// API routes with base path
+app.use('/pos-merchant/pos', require('./routes/posRequestRoutes'));
+
 app.get('/pos-merchant/health', (req, res) => {
   res.status(200).send('OK')
 })
