@@ -39,22 +39,3 @@ exports.downloadExcel = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-
-// app.get('/download-excel', async (req, res) => {
-//     try {
-//         const buffer = await downloadExcel();
-        
-//         res.setHeader(
-//             "Content-Type",
-//             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-//         );
-//         res.setHeader(
-//             "Content-Disposition",
-//             "attachment; filename=pos_requests.xlsx"
-//         );
-        
-//         res.send(buffer);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });

@@ -16,8 +16,11 @@ exports.connect = async () => {
     await pool.query('SELECT 1');
     console.log("✅ Database Connected ('_')");
 
+    // 1. Create Schemas
+    await pool.query(`CREATE SCHEMA IF NOT EXISTS pos`);
+
       await pool.query(`
-      CREATE TABLE IF NOT EXISTS pos_requests (
+      CREATE TABLE IF NOT EXISTS pos.pos_requests (
       id SERIAL PRIMARY KEY,
       zone VARCHAR(50),
       supervisor VARCHAR(100),

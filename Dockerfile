@@ -26,4 +26,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://pos-merchant:5500/pos-merchant/health || exit 1
 
 # Start the app
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
