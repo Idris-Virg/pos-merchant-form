@@ -2,24 +2,33 @@ require ("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path");
+require('./config/db').connect();
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 
-const posRequestRoutes = require("./routes/posRequestRoutes");
-app.use("/api/pos", posRequestRoutes);
+app.use (express.static('public'))
 
-app.get("/", (req, res) => {
-  res.json({ message: "Server is running" });
+
+const posRequestRoutes = require("./routes/posRequestRoutes");
+app.use("/pos-merchant/pos", posRequestRoutes);
+
+
+app.get("/pos-merchant", (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 5501;
+// API routes with base path
+app.use('/pos-merchant/pos', require('./routes/posRequestRoutes'));
+
+app.get('/pos-merchant/health', (req, res) => {
+  res.status(200).send('OK')
+})
+
+const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 }); 
-
-  
-
-
