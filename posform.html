@@ -361,25 +361,21 @@
             <label for="zone">1. Zone <span class="req">*</span></label>
             <select id="zone" name="zone" required>
               <option value="" selected disabled>Select your answer</option>
-              <option>North</option><option>South</option>
-              <option>East</option><option>West</option>
-              <option>Central</option>
+              <option>North West</option><option>North East</option>
+              <option>North Central</option><option>South South</option>
+              <option>South West</option><option>South East</option>
+              <option>Lagos</option>
             </select>
             <span class="error" data-error-for="zone"></span>
           </div>
 
-          <div class="form-field">
-            <label for="supervisor">2. Supervisor Name <span class="req">*</span></label>
-            <select id="supervisor" name="supervisor" required>
-              <option value="" selected disabled>Select your answer</option>
-              <option>Abdulrahman Bello</option><option>Bankole Thomas</option>
-              <option>Ahmed Lawal</option><option>Aisha Mohammed</option>
-            </select>
-            <span class="error" data-error-for="supervisor"></span>
+           <div class="form-field">
+            <label for="ebizStaff">2. Supervisor Name <span class="req">*</span></label>
+            <input id="ebizStaff" name="ebizStaff" type="text" placeholder="Enter your answer"/>
           </div>
 
           <div class="form-field">
-            <label for="ebizStaff">3. E-Business Staff Name</label>
+            <label for="ebizStaff">3. Business Development team <span class="req">*</span></label>
             <input id="ebizStaff" name="ebizStaff" type="text" placeholder="Enter your answer"/>
           </div>
 
@@ -412,7 +408,7 @@
           <span class="error" data-error-for="requestOption"></span>
         </div>
       </section>
-
+  
       <section id="newRequestBlock" class="card hidden">
         <h2 class="section-title">New Request</h2>
         <p class="muted">New Terminal Request</p>
@@ -473,7 +469,6 @@
         <div class="form-field">
           <label>15. Account Type <span class="req">*</span></label>
           <div class="checks">
-            <label><input type="checkbox" name="accountType" value="Savings"/> Savings</label>
             <label><input type="checkbox" name="accountType" value="Current"/> Current</label>
             <label><input type="checkbox" name="accountType" value="Corporate Account"/> Corporate Account</label>
           </div>
